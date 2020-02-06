@@ -57,7 +57,7 @@
 		"variables": {
 			"Key": {
 				"type": "String",
-				"defaultValue": "AIzaSyAHfANp9kumRlADnwOjrL0-tglGvS7U9gw"
+				"defaultValue": "AIzaSyDmDRnvO-sW4eRk8fmT05XBVksGwU_itm4"
 			},
 			"part": {
 				"type": "String",
@@ -73,7 +73,7 @@
 			},
 			"username": {
 				"type": "String",
-				"defaultValue": "clippers1970"
+				"defaultValue": "ingelenalopez"
 			},
 			"filtroStatistics": {
 				"type": "String",
