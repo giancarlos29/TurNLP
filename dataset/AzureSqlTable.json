@@ -11,6 +11,9 @@
 				"defaultValue": "dummy"
 			}
 		},
+		"folder": {
+			"name": "SocialMedia/Youtube"
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [],
