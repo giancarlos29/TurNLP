@@ -1,0 +1,45 @@
+{
+	"name": "youtubeChannelBase",
+	"properties": {
+		"parameters": {
+			"Table": {
+				"type": "string",
+				"defaultValue": "youtube.channel"
+			}
+		},
+		"variables": {
+			"Key": {
+				"type": "String",
+				"defaultValue": "AIzaSyAHfANp9kumRlADnwOjrL0-tglGvS7U9gw"
+			},
+			"part": {
+				"type": "String",
+				"defaultValue": "?part=id, snippet"
+			},
+			"Resource": {
+				"type": "String",
+				"defaultValue": "channels"
+			},
+			"filtro": {
+				"type": "String",
+				"defaultValue": "items(id,snippet(title,description,publishedAt))"
+			},
+			"username": {
+				"type": "String",
+				"defaultValue": "clippers1970"
+			},
+			"filtroStatistics": {
+				"type": "String",
+				"defaultValue": "items(id,statistics(viewCount,subscriberCount,videoCount))"
+			},
+			"columnsChannelBase": {
+				"type": "String",
+				"defaultValue": "channelid,published,Description,Title,upgrateDate"
+			}
+		},
+		"folder": {
+			"name": "SocialMedia/Youtube"
+		},
+		"annotations": []
+	}
+}
