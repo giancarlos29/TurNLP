@@ -1,0 +1,12 @@
+{
+	"name": "YoutubeLinkedService",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://www.googleapis.com/youtube/v3/",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
