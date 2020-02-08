@@ -1,13 +1,14 @@
 {
 	"name": "YoutubeLinkedService",
 	"properties": {
+		"description": "Youtube Rest",
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
 			"url": "https://www.googleapis.com/youtube/v3/",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
-		},
-		"description": "Youtube Rest"
-	}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
