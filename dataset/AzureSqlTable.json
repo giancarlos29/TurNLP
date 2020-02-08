@@ -18,19 +18,19 @@
 		"type": "AzureSqlTable",
 		"structure": [
 			{
-				"name": "channelid",
+				"name": "channelId",
 				"type": "String"
 			},
 			{
-				"name": "published",
-				"type": "DateTime"
-			},
-			{
-				"name": "Description",
+				"name": "subscriberCount",
 				"type": "String"
 			},
 			{
-				"name": "Title",
+				"name": "viewCount",
+				"type": "String"
+			},
+			{
+				"name": "videoCount",
 				"type": "String"
 			},
 			{

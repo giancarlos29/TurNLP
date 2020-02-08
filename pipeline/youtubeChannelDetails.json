@@ -64,7 +64,8 @@
 								"source": {
 									"type": "RestSource",
 									"httpRequestTimeout": "00:01:40",
-									"requestInterval": "00.00:00:00.010"
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
 								},
 								"sink": {
 									"type": "AzureSqlSink"
@@ -122,7 +123,19 @@
 						"requestInterval": "00.00:00:00.010",
 						"requestMethod": "GET"
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "AzureSqlSink"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"schemaMapping": {
+							"items[0].id": "channelId",
+							"items[0].statistics.viewCount": "viewCount",
+							"items[0].statistics.subscriberCount": "subscriberCount",
+							"items[0].statistics.videoCount": "videoCount"
+						}
+					}
 				},
 				"inputs": [
 					{
@@ -133,6 +146,15 @@
 								"value": "@{variables('Resource')}@{variables('part')}&key=@{variables('Key')}&forUsername=@{variables('username')}&fields=@{variables('filtroStatistics')}",
 								"type": "Expression"
 							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSqlTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "[youtube].ChannelDetails"
 						}
 					}
 				]
@@ -163,6 +185,9 @@
 				"type": "String",
 				"defaultValue": "items(id,statistics(viewCount,subscriberCount,videoCount))"
 			}
+		},
+		"folder": {
+			"name": "SocialMedia/Youtube"
 		},
 		"annotations": []
 	}
