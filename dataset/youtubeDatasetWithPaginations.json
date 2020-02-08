@@ -1,0 +1,30 @@
+{
+	"name": "youtubeDatasetWithPaginations",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "YoutubeLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"RelativeURI": {
+				"type": "string",
+				"defaultValue": "dummy"
+			}
+		},
+		"folder": {
+			"name": "SocialMedia/Youtube"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@dataset().RelativeURI",
+				"type": "Expression"
+			},
+			"requestMethod": "GET",
+			"paginationRules": {
+				"QueryParameters.pageToken": "$.nextPageToken"
+			}
+		}
+	}
+}
