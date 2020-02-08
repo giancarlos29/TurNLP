@@ -49,7 +49,7 @@
 					},
 					"ifTrueActivities": [
 						{
-							"name": "GetChannelDetails",
+							"name": "IfNot_GetChannelDetails",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
