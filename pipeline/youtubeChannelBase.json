@@ -46,6 +46,149 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "searchChannelBase",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "GetChannelBase",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "SELECT * FROM @{pipeline().parameters.Table}",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "dummy"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEachItemsChannelsBase",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "searchChannelBase",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('searchChannelBase').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "DeleteRows",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[youtube].[procDeleteForChannelsBase]",
+								"storedProcedureParameters": {
+									"columnUpgrateDate": {
+										"value": "upgrateDate",
+										"type": "String"
+									},
+									"idTable": {
+										"value": "channelid",
+										"type": "String"
+									},
+									"Table": {
+										"value": {
+											"value": "@{pipeline().parameters.Table}",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "AzureSqlNLP",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "RemoveAnyDuplicatesofChannelBase",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "DeleteRows",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[youtube].[RemoveDuplicatesofChannelBase]",
+								"storedProcedureParameters": {
+									"column_name": {
+										"value": {
+											"value": "@variables('columnsChannelBase')",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"primarykey": {
+										"value": "channelid",
+										"type": "String"
+									},
+									"table_name": {
+										"value": {
+											"value": "@{pipeline().parameters.Table}",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "AzureSqlNLP",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
 			}
 		],
 		"parameters": {
