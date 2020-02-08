@@ -70,7 +70,16 @@
 								"sink": {
 									"type": "AzureSqlSink"
 								},
-								"enableStaging": false
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"schemaMapping": {
+										"items[0].id": "channelId",
+										"items[0].statistics.viewCount": "viewCount",
+										"items[0].statistics.subscriberCount": "subscriberCount",
+										"items[0].statistics.videoCount": "videoCount"
+									}
+								}
 							},
 							"inputs": [
 								{
@@ -89,7 +98,7 @@
 									"referenceName": "AzureSqlTable",
 									"type": "DatasetReference",
 									"parameters": {
-										"TableName": "ChannelDetails"
+										"TableName": "[youtube].ChannelDetails"
 									}
 								}
 							]

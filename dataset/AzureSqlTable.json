@@ -18,24 +18,52 @@
 		"type": "AzureSqlTable",
 		"structure": [
 			{
-				"name": "channelId",
+				"name": "videoId",
 				"type": "String"
 			},
 			{
-				"name": "subscriberCount",
+				"name": "publishedAt",
+				"type": "DateTime"
+			},
+			{
+				"name": "title",
+				"type": "String"
+			},
+			{
+				"name": "description",
+				"type": "String"
+			},
+			{
+				"name": "duration",
+				"type": "String"
+			},
+			{
+				"name": "dimension",
 				"type": "String"
 			},
 			{
 				"name": "viewCount",
-				"type": "String"
+				"type": "Decimal"
 			},
 			{
-				"name": "videoCount",
-				"type": "String"
+				"name": "likeCount",
+				"type": "Int32"
+			},
+			{
+				"name": "dislikeCount",
+				"type": "Int32"
+			},
+			{
+				"name": "favoriteCount",
+				"type": "Int32"
 			},
 			{
 				"name": "upgrateDate",
 				"type": "DateTime"
+			},
+			{
+				"name": "channelid",
+				"type": "String"
 			}
 		],
 		"typeProperties": {

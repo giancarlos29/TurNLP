@@ -1,0 +1,206 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "SearchDate",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select top 1 publishedAt  from youtube.videos order by publishedAt desc",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "dummy"
+						}
+					}
+				}
+			},
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "SearchDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "https://www.googleapis.com/youtube/v3/search?channelId=@{variables('channelid')}&key=@{variables('Key')}&part=@{variables('partSearch')}&maxResults=50&order=date&type=video&fields=items(id(videoId))&publishedAfter=@{adddays(formatDateTime(activity('SearchDate').output.firstRow.publishedAt,'yyyy-MM-ddTHH:mm:ssZ'),-10)}",
+						"type": "Expression"
+					},
+					"method": "GET"
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Web1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"activities": [
+						{
+							"name": "CopyVideosDetails",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010"
+								},
+								"sink": {
+									"type": "AzureSqlSink"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"schemaMapping": {
+										"$.kind": "videoId",
+										"$.etag": "upgrateDate",
+										"$.pageInfo.totalResults": "channelid",
+										"snippet.publishedAt": "publishedAt",
+										"snippet.localized.title": "title",
+										"snippet.localized.description": "description",
+										"contentDetails.duration": "duration",
+										"contentDetails.dimension": "dimension",
+										"statistics.viewCount": "viewCount",
+										"statistics.likeCount": "likeCount",
+										"statistics.dislikeCount": "dislikeCount",
+										"statistics.favoriteCount": "favoriteCount"
+									},
+									"collectionReference": "$.items"
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "YoutubeDataset",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativeURI": {
+											"value": "@{variables('Resource')}@{variables('part')}&id=@{item().id.videoId}&key=@{variables('Key')}  \n",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "AzureSqlTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": "youtube.videos"
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"Table": {
+				"type": "string",
+				"defaultValue": "youtube.videos"
+			}
+		},
+		"variables": {
+			"Key": {
+				"type": "String",
+				"defaultValue": "AIzaSyDmDRnvO-sW4eRk8fmT05XBVksGwU_itm4"
+			},
+			"part": {
+				"type": "String",
+				"defaultValue": "?part=id, snippet,contentDetails,statistics"
+			},
+			"Resource": {
+				"type": "String",
+				"defaultValue": "videos"
+			},
+			"filtro": {
+				"type": "String",
+				"defaultValue": "items(id,snippet(title,description,publishedAt))"
+			},
+			"username": {
+				"type": "String",
+				"defaultValue": "ingelenalopez"
+			},
+			"filtroStatistics": {
+				"type": "String",
+				"defaultValue": "items(id,statistics(viewCount,subscriberCount,videoCount))"
+			},
+			"Columns": {
+				"type": "String",
+				"defaultValue": "videoId ,publishedAt ,title ,description ,duration ,dimension ,viewCount ,likeCount ,dislikeCount ,favoriteCount ,upgrateDate"
+			},
+			"channelid": {
+				"type": "String",
+				"defaultValue": "UCu07mt4hTb5zBhDAGuDn2Ag"
+			},
+			"partSearch": {
+				"type": "String",
+				"defaultValue": "id,snippet"
+			},
+			"days": {
+				"type": "String",
+				"defaultValue": "-10"
+			},
+			"keyToValidateVideoId": {
+				"type": "String",
+				"defaultValue": "AIzaSyAlkbX8mtXshgUgA4PLeCYoU45RjMP2LsM"
+			},
+			"partcomment": {
+				"type": "String",
+				"defaultValue": "?part=id,snippet"
+			},
+			"resourceComment": {
+				"type": "String",
+				"defaultValue": "commentThreads"
+			},
+			"keycomment": {
+				"type": "String",
+				"defaultValue": "AIzaSyCtYYK0B4FtOeQOWI9jDiKen-jUa4h34rY"
+			}
+		},
+		"annotations": []
+	}
+}
