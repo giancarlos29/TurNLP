@@ -16,6 +16,28 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "channelid",
+				"type": "String"
+			},
+			{
+				"name": "published",
+				"type": "DateTime"
+			},
+			{
+				"name": "Description",
+				"type": "String"
+			},
+			{
+				"name": "Title",
+				"type": "String"
+			},
+			{
+				"name": "upgrateDate",
+				"type": "DateTime"
+			}
+		],
 		"typeProperties": {
 			"tableName": {
 				"value": "@dataset().TableName",

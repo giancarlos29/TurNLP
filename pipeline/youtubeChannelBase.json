@@ -23,7 +23,16 @@
 					"sink": {
 						"type": "AzureSqlSink"
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"schemaMapping": {
+							"items[0].id": "channelid",
+							"items[0].snippet.title": "Title",
+							"items[0].snippet.description": "Description",
+							"items[0].snippet.publishedAt": "published"
+						}
+					}
 				},
 				"inputs": [
 					{
