@@ -1,0 +1,6 @@
+{
+	"name": "integrationRuntimeSDM-VPN",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
