@@ -1,0 +1,47 @@
+{
+	"name": "SDMTest",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlNLP",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "type",
+				"type": "varchar"
+			},
+			{
+				"name": "number",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "name",
+				"type": "varchar"
+			},
+			{
+				"name": "password",
+				"type": "varchar"
+			},
+			{
+				"name": "estatus",
+				"type": "char"
+			},
+			{
+				"name": "eccp_password",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "agent"
+		}
+	}
+}

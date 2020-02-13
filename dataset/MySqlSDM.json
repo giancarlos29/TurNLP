@@ -1,0 +1,15 @@
+{
+	"name": "MySqlSDM",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "MySQLSDM",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "MySqlTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "`agent`"
+		}
+	}
+}
